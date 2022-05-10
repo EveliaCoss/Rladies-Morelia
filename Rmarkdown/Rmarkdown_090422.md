@@ -81,11 +81,148 @@ Rmarkdown es ideal para crear reportes con codigo, notas y graficas.
 
 Tomando el ejemplo del [capitulo 8](https://swcarpentry.github.io/r-novice-gapminder/08-plot-ggplot2/index.html).
 
+Primero cargamos nuestros datos en el entorno de RStudio.
+```{r}
+gapminder <- read.csv("./data/gapminder_data.csv", stringsAsFactors = TRUE)
+head(gapminder)
+```
 
+Cargamos el paquete `ggplot2` y graficamos la informacion en forma de boxplot.
 
+```{r}
+library(ggplot2)
 
+continent_plot <-  ggplot(data = gapminder, mapping = aes(x=continent, y =lifeExp, fill=continent)) + 
+  geom_boxplot() + # graficar boxplot
+  facet_wrap(~year) + # dividirlo por year
+  theme(axis.title.x = element_blank(), # eliminar el titulo en x
+        axis.text.x = element_blank(), # elimiinar la informacion en x
+        axis.ticks.x = element_blank())  # eliminar las divisiones
+        
+continent_plot
+```
 
+Nota: para mas ejemplos de graficas puedes abrir el archivo **Ejemplo_Rmarkdown_090422.Rmd**.
 
+## Agregar imagenes
+
+Podemos anexar imagenes a nuestros archivos tomando figuras de internet como el siguiente ejemplo.
+
+```
+![The Carpentries Logo](https://carpentries.org/assets/img/TheCarpentries.svg)
+```
+
+![The Carpentries Logo](https://carpentries.org/assets/img/TheCarpentries.svg)
+
+Ademas, podemos anexar archivos contenidos en nuestra computadora:
+
+```{r}
+knitr::include_graphics("lifeExp_plot.png")
+```
+
+## Realizar calculos en el texto
+
+Podemos senalar en el texto que parte del mismo es un calculo matematico mediante el simbolo de comilla invertida (` `) en ambos extremos. Obteniendo algunos ejemplos como los siguientes.
+
+La suma de 4 mas 5 es `r 4+5`.
+
+La division de 4 entre 5 es `r 4/5`.
+
+La multiplicacion de 4 por 5 es `r 4*5`.
+
+Si 4^5 cuanto es? `r 4^5`
+
+Redondear valores, 9.44 se redondea a `r round(9.44,1)`
+
+## Lenguaje matematico
+
+* Agregar ecuacion matematica
+
+$$y = \mu + \sum_{i=1}^p \beta_i x_i + \epsilon$$
+
+* Agregar subindices para formulas (F~2~)
+
+* Agregar super indice (F^2^)
+
+## Generar tablas
+
+Rmarkdown puede emplear el lengua `html` para dar formato a la informacion.
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col"><center>Experimentos</center></th>
+      <th scope="col"><center>No. de Transcriptomas</center></th>
+    </tr>
+  </thead>
+  <tbody>
+  </tr>
+    <tr class="table-light">
+      <th scope="row">Etapas de desarrollo de la silicua</th>
+      <td><center>4</center></td>
+  </tr>
+  </tr>
+    <tr class="table-light">
+      <th scope="row">Raíz, flor, fruto y hoja</th>
+      <td><center>4</center></td>
+  </tr>
+  </tbody>
+</table>
+
+## Notitas
+
+Para dar color a tus reportes puede agregar notas en los mismos dependiendo del contenido de la informacion:
+
+Blue boxes (alert-info)
+<div class="alert alert-block alert-info">
+<b>Tip:</b> Use blue boxes (alert-info) for tips and notes.</div>
+
+Yellow boxes (alert-warning)
+<div class="alert alert-block alert-warning">
+<b>Example:</b> Use yellow boxes for examples that are not inside code cells, or use for mathematical formulas if needed. Typically also used to display warning messages.
+</div>
+
+Green boxes (alert-success)
+<div class="alert alert-block alert-success">
+<b>Success:</b> This alert box indicates a successful or positive action.
+</div>
+
+Red boxes (alert-danger)
+<div class="alert alert-block alert-danger">
+<b>Danger:</b> This alert box indicates a dangerous or potentially negative action.
+</div>
+  
+## Agregar indice
+
+Para finalizar podemos agregarle un indice a nuestro reporte editando la parte superior.
+
+ * Informacion incial
+```
+---
+title: "Sesion de Rmarkdown"
+author: "Evelia Coss"
+date: "4/9/2022"
+output: html_document 
+---
+```
+
+* Informacion modificada para agregar el indice
+
+```
+title: "Sesion de Rmarkdown"
+author: "Evelia Coss"
+date: "4/9/2022"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 6
+    theme: cerulean
+```
+
+`toc` es para indicar que vas a agregar un indice en el reporte, `toc_float` es para indicar si el indice va a ser flotante o no, si indicas `yes` el indice se localizara a la izquiera de la pantalla y la informacion se desplegara cuando se coloques sobre ella. `toc_depth` es para indicar el numero de subtitulos que puedes tener en el archivo y `theme` es la decoracion del archivo.
+
+Para mas temas puedes entrar al siguiente link: https://www.datadreaming.org/post/r-markdown-theme-gallery/
 
 
 
