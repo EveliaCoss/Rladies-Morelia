@@ -4,7 +4,7 @@
 library(stringr)
 library(tidyverse)
 
-setwd("~/Documentos/carpentries/R_ladies/energi_gapminder/per_person/")
+setwd("energi_gapminder/per_person/") # Pon aquí tu propio PATH
 
 for ( i in list.files(".",pattern = ".csv")){
   nombre <- str_sub(i, end = -5)
