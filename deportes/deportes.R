@@ -18,10 +18,12 @@ setwd("~/nelly/r-ladies/deportes/mopradef")
 getwd()
 
 library(ggplot2)
-library(dplyr )
+library(dplyr)
 
 mopradef.df <- read.csv(file = 'conjunto_de_datos/conjunto_de_datos_mopradef_2021_11.csv')
+
 colnames(mopradef.df)
+
 # Me interasn año, período, entidad, sexo edad
 unique(mopradef.df$anio)
 unique(mopradef.df$periodo)
@@ -29,15 +31,16 @@ unique(mopradef.df$entidad)
 unique(mopradef.df$sexo)
 unique(mopradef.df$edad)
 # Vamos a hacer x entidad, dos barras por sexo y counts
-depor_histo<-geom_histogram(mopradef.df )
+#depor_histo<-geom_histogram(mopradef.df )
 
 # entidad, cuenta, edad
 mopra_entidad<-mopradef.df %>%
-    group_by(entidad,sexo) %>%
-    count(entidad, sort = TRUE)
+  dplyr::group_by(entidad,sexo) %>%
+  dplyr::count(entidad, sort = TRUE)
 
 
 theme_set(theme_classic())
+
 depor_histo<-ggplot(mopra_entidad, aes(fill=as.factor(sexo),y=n,x=entidad)) +
   geom_bar(position="stack", stat="identity")+  # change binwidth
   labs(title="Histograma de deportistas por estado", 
@@ -57,8 +60,8 @@ ggsave(file="depor_histo.png",depor_histo)
 
 # entidad, cuenta, edad
 mopra_edad<-mopradef.df %>%
-  group_by(sexo,edad) %>%
-  count(edad, sort = TRUE)
+  dplyr::group_by(sexo,edad) %>%
+  dplyr::count(edad, sort = TRUE)
 
 
 theme_set(theme_classic())
