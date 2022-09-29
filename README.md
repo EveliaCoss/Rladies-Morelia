@@ -17,3 +17,4 @@ Lección [R para análisis Científicos repdroducibles](https://swcarpentry.gith
   Nelly Selem [Deportes - INEGI](https://github.com/EveliaCoss/Rladies-Morelia/tree/main/deportes)
   Evelia Coss [Marvel vs DC comics - Kaggler](https://github.com/EveliaCoss/Rladies-Morelia/tree/main/Marvel_vs_DCcomics)
   Claudia Zirion [Energia - Gapminder](https://github.com/EveliaCoss/Rladies-Morelia/tree/main/energi_gapminder)
+  
