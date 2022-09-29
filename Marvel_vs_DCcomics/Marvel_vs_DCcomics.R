@@ -299,3 +299,14 @@ marvelDcPower_gg <- marvelDcPower_db %>%
         plot.title = element_text(hjust = 0.5, vjust=1)) # posicion del titulo
 
 marvelDcPower_gg
+
+Figura2marvelDc_cowC <- plot_grid(NA, marvelDcPower_gg,  
+                             # A negative rel_height shrinks space between elements
+                            rel_widths = c(0.3, 2), # para dejar espacio y que la imagen no se corte
+                            nrow=1, 
+                            labels = "C", label_size = 20)
+
+tiff(file="Figura3_Poderes.tiff", width = 12, height = 8, units = 'in', res = 300)
+Figura2marvelDc_cowC
+dev.off()
+
