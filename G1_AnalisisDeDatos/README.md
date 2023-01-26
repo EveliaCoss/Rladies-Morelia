@@ -15,6 +15,7 @@ Datos en formato TSV (Informacion de *Arabidopsis thaliana*)
 
 * [Araport11 Gene Type](https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_gene_type)
 * [Araport11_GFF3_genes_transposons.current.gff.gz](https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_GFF3_genes_transposons.current.gff.gz)
+* [Araport11_GFF3_genes_transposons.current.gff](https://drive.google.com/file/d/1EBl07-o6Ai2QvOzDwjbFmazipWK1Jgj2/view?usp=share_link)
 * [Araport11_GTF_genes_transposons.current.gtf.gz](https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_GTF_genes_transposons.current.gtf.gz)
 * []()
 
