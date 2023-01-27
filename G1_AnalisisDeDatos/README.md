@@ -1,5 +1,16 @@
 # Grupo 1:  Analisis de Datos en R
 
+## Repaso de conocimientos
+
+Si quieres repasar tu conocimiento antes de adentrarte en esta actividad te propongo revisar los siguientes apartados, generados por [Software Carpentry](https://swcarpentry.github.io/r-novice-gapminder/):
+
+* [Data Structures](https://swcarpentry.github.io/r-novice-gapminder/04-data-structures-part1/index.html)
+* [Exploring Data frames](https://swcarpentry.github.io/r-novice-gapminder/05-data-structures-part2/index.html)
+* [Subsetting Data](https://swcarpentry.github.io/r-novice-gapminder/06-data-subsetting/index.html)
+* [Control Flow](https://swcarpentry.github.io/r-novice-gapminder/07-control-flow/index.html)
+
+Ademas si quieres checar que mas puedes hacer con tus dataframe puedes revisar esta pagina: https://sparkbyexamples.com/r-programming/add-row-to-dataframe-in-r/
+
 ## Datasets propuestos
 
 Datos en formato CSV  - Archivos separados por comas
