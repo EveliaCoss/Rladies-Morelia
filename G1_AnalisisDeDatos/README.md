@@ -44,6 +44,21 @@ library(reshape2)
 library(dplyr)
 ```
 
+Las funciones que usaremos seran del paquete `dplyr`:
+
+```
+select() : Seleccionar nombres de las columnas.
+filter() : Filtrar filas por una condicion especifica, apartir de la columna.
+mutate() : Modificar o agregar columnas.
+group_by() : Agrupar informacion de acuerdo a un(as) columna(s) seleccionada(s). 
+if_else() : Condicional.
+arrange() : Acomodar los resultados, default de menor a mayor.
+count(): Cuenta los valores de acuerdo a una variable.
+left_join() : Unir dos dataframe con base en una misma columna en comun.
+n_distinct() : Cuenta las filas unicas.
+distinct() : Muestra las filas duplicadas.
+```
+
 A) Importar informacion en R
 
 ```
