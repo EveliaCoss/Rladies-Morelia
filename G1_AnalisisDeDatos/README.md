@@ -13,13 +13,12 @@ Ademas si quieres checar que mas puedes hacer con tus dataframe puedes revisar e
 
 ## Datasets propuestos
 
-Datos en formato CSV  - Archivos separados por comas
--------------------------------------------
+### Datos en formato CSV  - Archivos separados por comas
 
 * [Marvel vs DC Comics](https://github.com/cosmoduende/r-marvel-vs-dc/tree/main/dataset_shdb)
 
-Datos en formato TSV (Informacion de *Arabidopsis thaliana*) - Archivos separados por tabuladores
--------------------------------------------
+###  Datos en formato TSV (Informacion de *Arabidopsis thaliana*) - Archivos separados por tabuladores
+
 Obtenidos de la Base de datos de [Arabidopsis thaliana](https://www.arabidopsis.org/download/index-auto.jsp?dir=%2Fdownload_files%2FGenes%2FAraport11_genome_release)
 
 * [Araport11 Gene Type.txt](https://www.arabidopsis.org/download_files/Genes/Araport11_genome_release/Araport11_gene_type) 
