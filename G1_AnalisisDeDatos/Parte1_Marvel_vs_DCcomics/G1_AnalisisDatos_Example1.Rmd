@@ -1,0 +1,310 @@
+---
+title: "G1_AnalisisDatos_Rladies_ej1"
+author: "Evelia Coss"
+date: "2023-01-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Parte 1
+
+### Datos Marvel vs DC comics
+
+```{r}
+# REQUIRED LIBRARIES
+library(ggplot2) #
+library(reshape2) # install.packages("reshape2")
+#library(plyr)
+library(dplyr) # install.packages("dplyr")
+#library(gridExtra)
+#library(wesanderson)
+#library(pander)
+#library(plotly)
+```
+
+
+```{r Importar datos}
+infoCharacters <- read.csv("data/heroesInformation.csv", na.strings = c("-", "-99")) # sustituir valores - y -99  por NA
+infoPowers <- read.csv("data/superHeroPowers.csv")
+infoStats <- read.csv("data/charactersStats.csv", na.strings = "")
+
+head(infoCharacters)
+head(infoPowers)
+head(infoStats)
+```
+
+Renombrar la columna "name" por "Name" en infoCharacters
+
+```{r}
+colnames(infoCharacters)[colnames(infoCharacters) == "name"] <- "Name"
+colnames(infoPowers)[colnames(infoPowers) == "hero_names"] <- "Name"
+```
+
+Separar por empresas
+
+```{r}
+# Empresas comprendidas en esta base de datos
+unique(infoCharacters$Publisher)
+
+# Solo Marvel Comics y DC Comics
+marvelDcInfo <- infoCharacters[(infoCharacters$Publisher == "Marvel Comics" | infoCharacters$Publisher == "DC Comics"), ]
+head(marvelDcInfo)
+```
+
+Eliminar personajes duplicados
+
+```{r}
+duplicated(marvelDcInfo$name)
+dim(marvelDcInfo)
+
+marvelDcInfo <- marvelDcInfo[!duplicated(marvelDcInfo$Name), ]
+head(marvelDcInfo)
+```
+
+Seleccionar columnas de interes
+
+```{r}
+marvelDcInfo <- marvelDcInfo %>%
+  select(Name, Gender, Race, Publisher)
+head(marvelDcInfo)
+```
+
+## Unir tablas de estadisticas
+
+
+```{r}
+marvelDcStatsInfo <- left_join(marvelDcInfo, infoStats, by = "Name")
+head(marvelDcStatsInfo)
+
+fullMarvelDc <- left_join(marvelDcStatsInfo, infoPowers, by = "Name")
+head(fullMarvelDc)
+```
+
+## Algunas preguntas
+
+Cantidad de personajes:
+
+```{r}
+# Cambiar formatos
+fullMarvelDc$Name <- as.factor(fullMarvelDc$Name)
+fullMarvelDc$Gender <- as.factor(fullMarvelDc$Gender)
+fullMarvelDc$Race <- as.factor(fullMarvelDc$Race)
+fullMarvelDc$Publisher <- as.factor(fullMarvelDc$Publisher)
+fullMarvelDc$Alignment <- as.factor(fullMarvelDc$Alignment)
+
+# Opcion A
+summary(fullMarvelDc$Publisher)
+
+# Opcion B
+fullMarvelDc %>% filter(Publisher == "DC Comics") %>% n_distinct()
+fullMarvelDc %>% filter(Publisher == "Marvel Comics") %>% n_distinct()
+
+```
+Cuantos de cada sexo:
+
+```{r}
+# Opcion A
+fullMarvelDc %>% select(Gender, Publisher) %>% filter(Publisher == "DC Comics" & Gender == "Male") %>% nrow()
+fullMarvelDc %>% select(Gender, Publisher) %>% filter(Publisher == "DC Comics" & Gender == "Female") %>% nrow()
+
+fullMarvelDc %>% select(Gender, Publisher) %>% filter(Publisher == "Marvel Comics" & Gender == "Male") %>% nrow()
+fullMarvelDc %>% select(Gender, Publisher) %>% filter(Publisher == "Marvel Comics" & Gender == "Female") %>% nrow()
+
+# Opcion B
+marvelDcGender <- fullMarvelDc %>% filter(!is.na(Gender)) %>%
+  group_by(Gender) %>%
+  dplyr::count(Publisher) %>%
+  select(Gender, Publisher, Count = n)
+
+head(marvelDcGender)
+```
+
+Cual es la raza predominante por compania
+
+```{r}
+marvelDcRace<- fullMarvelDc %>% filter(!is.na(Race)) %>%
+  group_by(Publisher) %>%
+  dplyr::count(Race) %>%
+  select(Publisher,Race,  Count = n) %>%
+  arrange(-Count) # ordenar de max a min
+
+head(marvelDcRace)
+
+# Y si le agregamos sexo?
+fullMarvelDc %>% filter(!is.na(Race)) %>%
+  group_by(Publisher, Gender) %>%
+  dplyr::count(Race) %>%
+  select(Publisher, Gender, Race,  Count = n) %>%
+  arrange(-Count) # ordenar de max a min
+
+```
+
+Cuantos son villanos, cuantos son heroes?
+
+```{r}
+marvelDcAlignment <- fullMarvelDc %>%   filter(!is.na(Alignment)) %>%
+  group_by(Publisher) %>%
+  dplyr::count(Alignment) %>%
+  select(Publisher, Alignment,  Count = n) %>%
+  arrange(-Count) # ordenar de max a min
+
+marvelDcAlignment
+
+# Y si le agregamos sexo?
+fullMarvelDc %>% filter(!is.na(Alignment) & !is.na(Gender)) %>%
+  group_by(Publisher, Gender) %>%
+  dplyr::count(Alignment) %>%
+  select(Publisher, Gender, Alignment,  Count = n) %>%
+  arrange(-Count) # ordenar de max a min
+```
+
+## Habilidades
+
+```{r}
+# Acomodo de tablas y asignacion de habilidades
+marvelDc <- melt(fullMarvelDc, id = c("Name", "Gender", "Race", "Publisher", "Alignment", "Intelligence.x", 
+                                         "Strength", "Speed", "Durability.x", "Power", "Combat", "Total"))
+
+# Cambiar formatos
+marvelDc$Name <- as.factor(marvelDc$Name)
+marvelDc$Gender <- as.factor(marvelDc$Gender)
+marvelDc$Race <- as.factor(marvelDc$Race)
+marvelDc$Publisher <- as.factor(marvelDc$Publisher)
+marvelDc$Alignment <- as.factor(marvelDc$Alignment)
+colnames(marvelDc)[colnames(marvelDc) == "variable"] <- "SuperPower"
+marvelDc$SuperPower <- as.factor(marvelDc$SuperPower)
+
+# Corregir nombres de columnas
+colnames(marvelDc)[colnames(marvelDc) == "Intelligence.x"] <- "Intelligence"
+colnames(marvelDc)[colnames(marvelDc) == "Durability.x"] <- "Durability"
+
+
+# Seleccion de habilidades con TRUE
+marvelDc <- marvelDc %>%
+  filter(value == "True") %>%
+  select(-value) #eliminar columna
+
+head(marvelDc)
+```
+
+
+```{r}
+marvelDc %>% filter(Name == "Superman")
+```
+
+Quien es el mas fuerte?
+
+```{r}
+marvelDc %>% filter(!is.na(Strength)) %>%  # filtrar NA
+  group_by(Name, Publisher) %>%  # Agrupar por nombre del heroe y empresa
+  distinct(Strength) %>% # Eliminar duplicados en la columna, para tener solo un valor por personaje
+  select(Name, Publisher, Strength) %>% # seleccionar columnas
+  arrange(-Strength) # Ordenar de mayor a menor
+
+```
+
+
+Quien es el mas inteligente?
+
+```{r}
+marvelDc %>% filter(!is.na(Intelligence)) %>%  # filtrar NA
+  group_by(Name, Publisher) %>%
+  distinct(Intelligence) %>% # eliminar duplicados
+  select(Name, Publisher, Intelligence) %>%
+  arrange(-Intelligence)
+
+```
+
+Quien tiene mas poderes?
+
+```{r}
+marvelDc %>% group_by(Name, Publisher) %>%
+  distinct(SuperPower) %>%
+  dplyr::count(Publisher) %>%
+  select(Name, Publisher,  Count = n) %>%
+  arrange(-Count) # ordenar de max a min
+```
+
+```{r}
+# Es el personaje con mas habilidades, pero tiene sus stats muy bajos
+marvelDc %>% filter(Name == "Spectre")
+```
+
+Quien tiene los stats mas altos?
+
+```{r}
+# Es el personaje con mas habilidades, pero tiene sus stats muy bajos
+
+# Opcion A
+marvelDc %>% arrange(-Intelligence, -Strength, -Speed, -Durability, -Power, -Combat ) %>%
+  select(-SuperPower) %>%
+  distinct()
+
+# Opcion B
+# Hay 6 columnas de stats, osea que los valores maximos se encuentran cercanos a 600 [6-11]
+marvelDc %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Intelligence >= 100 & Strength >= 100 & Speed >= 100 & Durability >= 100 & Power >= 100 & Combat >= 100)
+# Ninguno
+
+# Personaje con stats superiores a 90 en cada uno
+marvelDc %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Intelligence >= 90 & Strength >= 90 & Speed >= 90 & Durability >= 90 & Power >= 90 & Combat >= 90)
+
+
+# Personas con valores totales superiores a 570
+marvelDc %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Total >= 570)
+```
+
+Quien es la mujer mas poderosa y malvada?
+
+```{r}
+# con filtro
+marvelDc %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Total >= 500  & Gender == "Female" & Alignment == "bad") 
+
+# sin filtro
+marvelDc %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Gender == "Female" & Alignment == "bad") %>%
+  arrange(-Total)
+```
+
+Quien es el hombre mas poderosa y malvada?
+
+```{r}
+# sin filtro
+marvelDc %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Gender == "Male" & Alignment == "bad") %>%
+  arrange(-Total)
+
+# Y bueno ?
+marvelDc %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Gender == "Male" & Alignment == "good") %>%
+  arrange(-Total)
+
+
+# Ambos ?
+marvelDc %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Gender == "Male" & Alignment == c("good", "bad")) %>%
+  arrange(-Total)
+```
+
+Agregar etiqueta "Heroe (hero)", "villano (villain)" o "Neutral (neutral)"
+
+
+```{r}
+# Agregar nueva columna con etiqueta
+marvelDc_edited <- marvelDc %>% mutate(Group = if_else(Alignment == "good","hero", if_else(Alignment == "bad","villain", "neutral")))
+
+marvelDc_edited %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
+  filter(Gender == "Male" & Group == c("hero","villain")) %>%
+  arrange(-Total)
+```
+
+
+
+
