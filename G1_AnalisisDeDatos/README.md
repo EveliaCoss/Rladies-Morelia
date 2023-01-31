@@ -50,4 +50,16 @@ Objetivos de esta seccion:
 * Agrupar por los biotipos encontrados en los archivos.
 * Filtrar datos...
 
+---------------------------
+
+## Proyecto individual
+
+En este proyecto primero debes eligir una *base de datos* de tu eleccion, posteriormente debes armar un breve ejercicio como los que te mostre en la **Parte 1** y **Parte 2** contestando entre 3 a 5 preguntas. Debes incluir:
+
+* Importacion de datos (CSV, TSV, GTF, GFF, BED, TXT, etc) a R.
+* Empleo de comandos basicos en R.
+* Manipulacion de datos (limpieza, filtrado, adicion, eliminacion, ordenar, etc).
+* Uso de condicionales (if_else).
+
+La exposicion es de aproximadamente **30 min** por persona. Es necesario que armes o generes un Github (como este) para que pueda ser mas facil compartirlo con los demas equipos. Solo habra un Github por equipo con todo el conteniendo de las participantes.
 
