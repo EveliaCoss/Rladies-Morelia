@@ -22,7 +22,7 @@ library(dplyr)
 Las funciones que usaremos seran del paquete `dplyr`:
 
 ```
-select() : Seleccionar nombres de las columnas.
+select() : Seleccionar nombres de las columnas. --> select(dataframe, columna1, columna2, ... columnax)
 filter() : Filtrar filas por una condicion especifica, apartir de la columna.
 mutate() : Modificar o agregar columnas.
 group_by() : Agrupar informacion de acuerdo a un(as) columna(s) seleccionada(s). 
@@ -33,6 +33,15 @@ left_join() : Unir dos dataframe con base en una misma columna en comun.
 n_distinct() : Cuenta las filas unicas.
 distinct() : Muestra las filas duplicadas.
 ```
+
+Si quieres ver mas funciones de 'dplyr' puedes visitar su [Github](https://github.com/cran/dplyr). En la seccion *Cheat Sheet* se encuentra la informacion resumida.
+
+La funcion empleada del paquete `reshape2`:
+
+```
+melt(): Modificacion el formato de un dataframe.
+```
+i quieres ver mas funciones de 'reshape2' puedes visitar su [Github](https://github.com/cran/reshape2). 
 
 A) Importar informacion en R
 
