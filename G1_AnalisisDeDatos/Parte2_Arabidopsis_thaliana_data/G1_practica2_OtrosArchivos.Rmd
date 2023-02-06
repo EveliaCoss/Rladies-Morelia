@@ -1,0 +1,151 @@
+---
+title: "G1_practica2_ArchivosOtros"
+author: "Evelia Coss"
+date: "2023-02-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Cargar otro tipo de archivos en R
+
+```{r Cargar librerias}
+# REQUIRED LIBRARIES
+library(reshape2) # install.packages("reshape2")
+library(dplyr) # install.packages("dplyr")
+library(stringr) # install.packages("stringr")
+library(tidyverse) # install.packages("tidyverse")
+```
+
+```{r Importar datos TSV}
+# Cargar tabla separada por tabuladores (TSV) 
+At_Araport_gene_type_db <- read.table("data/Araport11_gene_type.txt", header=TRUE, skip =3) # saltar las primeras tres lineas
+
+# renombrar columnas
+colnames(At_Araport_gene_type_db) <- c("GeneID", "Info")
+head(At_Araport_gene_type_db)
+```
+
+```{r Read GTF giles}
+At_Araport_GTF_db <- read.table("data/Araport11_GTF_genes_transposons.current.gtf", header=FALSE, sep = "\t") 
+
+# renombrar
+colnames(At_Araport_GTF_db) <- c("chrom", "source", "feature", "start", "end", "score", "strand", "frame", "attribute")
+  
+head(At_Araport_GTF_db)
+```
+
+```{r Read GFF3 giles}
+At_Araport_GFF3_db <-read.delim("data/Araport11_GFF3_genes_transposons.current.gff", header=F, comment.char="#")
+# character: a character vector of length one containing a single character or an empty string. Use "" to turn off the interpretation of comments altogether.
+
+# renombrar
+colnames(At_Araport_GFF3_db) <- c("chrom", "source", "feature", "start", "end", "score", "strand", "frame", "attribute")
+
+head(At_Araport_GFF3_db)
+```
+
+```{r Read BED 12 giles}
+At_Araport11_pcodinggene_BED_db <- read.table("data/Araport11_pcoding_transcripts.bed", header=FALSE) 
+# character: a character vector of length one containing a single character or an empty string. Use "" to turn off the interpretation of comments altogether.
+
+# Renombrar
+colnames(At_Araport11_pcodinggene_BED_db) <- c("chrom", "chromStart", "chromEnd", "TranscriptID", "score", "strand", "thickStart", "thickEnd", "itemRgb", "blockCount", "blockSizes", "blockStarts")
+
+head(At_Araport11_pcodinggene_BED_db)
+```
+
+```{r Read BED 13 giles}
+At_Araport11_lncRNAsgene_BED_db <- read.table("data/Araport11_lncRNAs_genes_biotypes_label.bed", header=FALSE) 
+# character: a character vector of length one containing a single character or an empty string. Use "" to turn off the interpretation of comments altogether.
+
+# Renombrar
+colnames(At_Araport11_lncRNAsgene_BED_db) <- c("chrom", "chromStart", "chromEnd", "TranscriptID", "score", "strand", "thickStart", "thickEnd", "itemRgb", "blockCount", "blockSizes", "blockStarts", "Type")
+
+head(At_Araport11_lncRNAsgene_BED_db)
+```
+
+Cuantos genes hay anotados en la base de datos de Araport11?
+
+```{r}
+# Opcion A
+dim(At_Araport_gene_type_db)
+
+# Opcion B
+n_distinct(At_Araport_gene_type_db$GeneID)
+```
+
+Cuales son los biotipos anotados en Araport11?
+
+```{r}
+unique(At_Araport_gene_type_db$Info)
+```
+Cuantos genes hay en cada biotipo?
+
+```{r}
+table(At_Araport_gene_type_db$Info)
+```
+Anotar geneID
+
+```{r Numero de exones}
+# Agregar columna de GeneID y eliminar de TranscriptID los ultimos dos caracteres
+At_Araport11_pcodinggene_db <- At_Araport11_pcodinggene_BED_db %>% 
+mutate(GeneID = gsub('.{2}$',"", At_Araport11_pcodinggene_BED_db[,4]))  # eliminar los ultimos dos caracteres
+# ordenar
+At_Araport11_pcodinggene_db <- At_Araport11_pcodinggene_db[,c(1:4,13,5:12)]
+head(At_Araport11_pcodinggene_db)
+```
+
+
+```{r Numero de exones}
+
+head(At_Araport11_pcodinggene_db)
+```
+
+Agregar Biotipo
+
+```{r}
+At_Araport11_pcodinggene_db <- left_join(At_Araport11_pcodinggene_db, At_Araport_gene_type_db, by ="GeneID")
+head(At_Araport11_pcodinggene_db)
+```
+
+```{r}
+# cuales son los biotipo?
+unique(At_Araport11_pcodinggene_db$Info)
+```
+Cuantos genes hay?
+
+```{r}
+At_Araport11_pcodinggene_db %>% select(GeneID) %>% n_distinct()
+```
+
+Cuantos transcritos hay?
+
+```{r}
+At_Araport11_pcodinggene_db %>% select(TranscriptID) %>% n_distinct()
+```
+
+
+MatureLength
+
+```{r}
+At_Araport11_pcodinggene_db$MatureLength <- sapply(strsplit(At_Araport11_pcodinggene_db$blockSizes, ","), function(x) sum(as.numeric(x)))
+
+head(At_Araport11_pcodinggene_db)
+```
+
+
+```{r}
+# Cuales es el tamano mas grandes y pequeno?
+summary(At_Araport11_pcodinggene_db$MatureLength)
+```
+
+
+
+
+
+
+
+
