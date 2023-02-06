@@ -204,7 +204,7 @@ At_Araport11_pcodinggene_db %>% select(TranscriptID) %>% n_distinct()
 
 ```
 
-### Agregar el tamano dle transcrito
+### Agregar el tamano del transcrito
 
 ```
 At_Araport11_pcodinggene_db$MatureLength <- sapply(strsplit(At_Araport11_pcodinggene_db$blockSizes, ","), function(x) sum(as.numeric(x)))
