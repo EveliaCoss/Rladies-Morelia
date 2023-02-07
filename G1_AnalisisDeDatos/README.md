@@ -13,7 +13,7 @@ Ademas si quieres checar que mas puedes hacer con tus dataframe puedes revisar e
 
 ## Datasets propuestos
 
-### Datos en formato CSV  - Archivos separados por comas
+### Datos en formato CSV  - Archivos separados por comas 
 
 * [Marvel vs DC Comics](https://github.com/cosmoduende/r-marvel-vs-dc/tree/main/dataset_shdb)
 
@@ -27,7 +27,7 @@ Obtenidos de la Base de datos de [Arabidopsis thaliana](https://www.arabidopsis.
 * [Araport11_pcoding_transcripts.bed](https://drive.google.com/file/d/1a3UzS6X_rQ8eyw0WllM8vR8DK4Aq3dR6/view?usp=share_link) - [Formato BED12](https://genome.ucsc.edu/FAQ/FAQformat.html)
 * [Araport11_lncRNAs_genes_biotypes_label.bed](https://drive.google.com/file/d/1I5mLJMPbJj3mcRd8WUWNGhpXrMWDioyn/view?usp=share_link) - Formato BED13 (BED12 + columna con informacion)
 
-## Parte 1.- Ejercicio con la base de datos Marvel vs DC Comics (29/01/23)
+## Parte 1.- Ejercicio con la base de datos Marvel vs DC Comics (31/Enero/2023)
 
 Descarga los Datos en formato CSV de la parte superior, los datos fueron tomados del [Github de Cosmoduende](https://github.com/cosmoduende).
 
@@ -38,7 +38,7 @@ Objetivos de esta seccion:
 * Manipulacion de datos (limpieza, filtrado, adicion, eliminacion, ordenar, etc).
 * Uso de condicionales (if_else).
 
-## Parte 2.- Ejercicio con datos reales de especies (PROXIMAMENTE)
+## Parte 2.- Ejercicio con datos reales de especies (6/Febrero/2023)
 
 Descarga los **Datos en formato TSV** de la parte superior, los archivos provienen de la base de datos TAIR10/Araport11 de *Arabidopsis thaliana*. 
 
