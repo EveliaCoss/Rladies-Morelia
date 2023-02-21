@@ -41,7 +41,7 @@ Renombrar la columna "name" por "Name" en infoCharacters
 
 ```{r}
 colnames(infoCharacters)
-
+colnames(infoCharacters)[2]
 #colnames(infoCharacters)[2] <- "Name"
 colnames(infoCharacters)[colnames(infoCharacters) == "name"] <- "Name"
 
@@ -59,8 +59,14 @@ unique(infoCharacters$Publisher)
 #infoCharacters[1,]
 #infoCharacters[,1]
 
+# opcion A
 marvelDcInfo <- infoCharacters[(infoCharacters$Publisher == "Marvel Comics" | infoCharacters$Publisher == "DC Comics"), ]
 head(marvelDcInfo)
+
+unique(marvelDcInfo$Publisher)
+
+# opcion B
+#marvelDcInfo <- infoCharacters %>% filter(Publisher %in% c("Marvel Comics", "DC Comics"))
 ```
 
 Eliminar personajes duplicados
@@ -71,10 +77,14 @@ dim(marvelDcInfo)
 
 #marvelDcInfo[fila,columna]
 
+# opcion A
 marvelDcInfo <- marvelDcInfo[!duplicated(marvelDcInfo$Name), ] # dame los nombres de los heroes (fila) que no esten duplicados
 head(marvelDcInfo)
 
 dim(marvelDcInfo)
+
+# opcion B
+marvelDcInfo <- marvelDcInfo %>% filter(!(duplicated(Name)))
 ```
 
 Seleccionar columnas de interes
@@ -82,7 +92,7 @@ Seleccionar columnas de interes
 ```{r}
 # opcion A
 marvelDcInfo <- marvelDcInfo %>%
-  select(Name, Gender, Race, Publisher)
+  dplyr::select(Name, Gender, Race, Publisher)
 
 # opcion B
 #marvelDcInfo <-  
@@ -131,6 +141,7 @@ fullMarvelDc$Alignment <- as.factor(fullMarvelDc$Alignment)
 
 str(fullMarvelDc) 
 
+# Cuantos personajes hay en cada compania?
 # Opcion A
 summary(fullMarvelDc$Publisher)
 
@@ -139,7 +150,7 @@ fullMarvelDc %>% filter(Publisher == "DC Comics") %>% n_distinct()
 fullMarvelDc %>% filter(Publisher == "Marvel Comics") %>% n_distinct()
 
 ```
-Cuantos de cada sexo:
+Cuantos de cada genero:
 
 ```{r}
 # Opcion A
@@ -212,6 +223,8 @@ head(fullMarvelDc)
 marvelDc <- melt(fullMarvelDc, id = c("Name", "Gender", "Race", "Publisher", "Alignment", "Intelligence.x", 
                                          "Strength", "Speed", "Durability.x", "Power", "Combat", "Total"))
 
+
+str(fullMarvelDc)
 # Cambiar formatos
 marvelDc$Name <- as.factor(marvelDc$Name)
 marvelDc$Gender <- as.factor(marvelDc$Gender)
@@ -342,7 +355,12 @@ Agregar etiqueta "Heroe (hero)", "villano (villain)" o "Neutral (neutral)"
 
 ```{r}
 # Agregar nueva columna con etiqueta
-marvelDc_edited <- marvelDc %>% mutate(Group = if_else(Alignment == "good","hero", if_else(Alignment == "bad","villain", "neutral")))
+marvelDc_edited <- marvelDc %>% mutate(Group = if_else(Alignment == "good","hero", 
+                                                       if_else(Alignment == "bad","villain", "neutral")))
+
+head(marvelDc_edited)
+
+across()
 
 #if_else(condicion, si pasa esto, si no pasa esto)
 
@@ -353,4 +371,7 @@ marvelDc_edited %>% select(-SuperPower) %>% distinct() %>% # eliminas duplicados
 
 
 
+```{r}
+rm(infoCharacters, infoPowers, infoStats, marvelDc_edited, marvelDc, marvelDcAlignment, fullMarvelDc, marvelDcGender, marvelDcStatsInfo, marvelDcInfo)
+```
 
