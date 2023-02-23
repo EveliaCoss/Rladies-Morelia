@@ -42,10 +42,17 @@ Renombrar la columna "name" por "Name" en infoCharacters
 ```{r}
 colnames(infoCharacters)
 colnames(infoCharacters)[2]
-#colnames(infoCharacters)[2] <- "Name"
+#opcionA
+#olnames(infoCharacters)[2] <- "Name"
+# opcion B
 colnames(infoCharacters)[colnames(infoCharacters) == "name"] <- "Name"
 
 colnames(infoPowers)[colnames(infoPowers) == "hero_names"] <- "Name"
+
+
+head(infoCharacters)
+head(infoPowers)
+head(infoStats)
 ```
 
 Separar por empresas
@@ -66,7 +73,10 @@ head(marvelDcInfo)
 unique(marvelDcInfo$Publisher)
 
 # opcion B
-#marvelDcInfo <- infoCharacters %>% filter(Publisher %in% c("Marvel Comics", "DC Comics"))
+marvelDcInfo <- infoCharacters %>% filter(Publisher %in% c("Marvel Comics", "DC Comics"))
+head(marvelDcInfo)
+
+unique(marvelDcInfo$Publisher)
 ```
 
 Eliminar personajes duplicados
@@ -85,6 +95,7 @@ dim(marvelDcInfo)
 
 # opcion B
 marvelDcInfo <- marvelDcInfo %>% filter(!(duplicated(Name)))
+dim(marvelDcInfo)
 ```
 
 Seleccionar columnas de interes
@@ -95,8 +106,8 @@ marvelDcInfo <- marvelDcInfo %>%
   dplyr::select(Name, Gender, Race, Publisher)
 
 # opcion B
-#marvelDcInfo <-  
-#  select(marvelDcInfo, Name, Gender, Race, Publisher)
+#arvelDcInfo <-  
+# select(marvelDcInfo, Name, Gender, Race, Publisher)
 
 #select(dataframe, columna1, columna2, columna3)
 
@@ -150,7 +161,7 @@ fullMarvelDc %>% filter(Publisher == "DC Comics") %>% n_distinct()
 fullMarvelDc %>% filter(Publisher == "Marvel Comics") %>% n_distinct()
 
 ```
-Cuantos de cada genero:
+Cuantos de cada genero en cada empresa?
 
 ```{r}
 # Opcion A
@@ -195,7 +206,7 @@ fullMarvelDc %>% filter(!is.na(Race)) %>%
 Cuantos son villanos, cuantos son heroes?
 
 ```{r}
-marvelDcAlignment <- fullMarvelDc %>%   filter(!is.na(Alignment)) %>%
+marvelDcAlignment <- fullMarvelDc %>%  filter(!is.na(Alignment)) %>%
   group_by(Publisher) %>%
   dplyr::count(Alignment) %>%
   select(Publisher, Alignment,  Count = n) %>%
@@ -224,13 +235,17 @@ marvelDc <- melt(fullMarvelDc, id = c("Name", "Gender", "Race", "Publisher", "Al
                                          "Strength", "Speed", "Durability.x", "Power", "Combat", "Total"))
 
 
-str(fullMarvelDc)
+str(marvelDc)
+dim(marvelDc)
+head(marvelDc)
+
 # Cambiar formatos
 marvelDc$Name <- as.factor(marvelDc$Name)
 marvelDc$Gender <- as.factor(marvelDc$Gender)
 marvelDc$Race <- as.factor(marvelDc$Race)
 marvelDc$Publisher <- as.factor(marvelDc$Publisher)
 marvelDc$Alignment <- as.factor(marvelDc$Alignment)
+
 # renombrar columna
 colnames(marvelDc)[colnames(marvelDc) == "variable"] <- "SuperPower"
 marvelDc$SuperPower <- as.factor(marvelDc$SuperPower)
@@ -281,10 +296,11 @@ Quien tiene mas poderes?
 ```{r}
 marvelDc %>% group_by(Name, Publisher) %>%
   distinct(SuperPower) %>%
-  dplyr::count(Publisher) %>%
+  dplyr::count(Publisher) %>% # dplyr::count(Name) %>%
   select(Name, Publisher,  Count = n) %>%
   arrange(-Count) # ordenar de max a min
 ```
+
 
 ```{r}
 # Es el personaje con mas habilidades, pero tiene sus stats muy bajos
@@ -360,7 +376,6 @@ marvelDc_edited <- marvelDc %>% mutate(Group = if_else(Alignment == "good","hero
 
 head(marvelDc_edited)
 
-across()
 
 #if_else(condicion, si pasa esto, si no pasa esto)
 
